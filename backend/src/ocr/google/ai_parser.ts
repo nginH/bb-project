@@ -5,7 +5,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 dotenv.config();
 
-// ===== CONFIG =====
 const INPUT_JSON = path.join(__dirname, "output_raw.json");
 const OUTPUT_JSON = path.join(__dirname, "output_structured.json");
 
@@ -15,9 +14,7 @@ const model = genAI.getGenerativeModel({
     generationConfig: { responseMimeType: "application/json" }
 });
 
-// ===== PROMPTS =====
 
-// First doc → define schema
 const SCHEMA_PROMPT = `
 Extract structured candidate data from OCR text of a university merit list.
 
@@ -38,7 +35,6 @@ Rules:
 ONLY return JSON.
 `;
 
-// Next docs → enforce schema
 function buildStrictPrompt(schema: any) {
     return `
 Extract candidates using EXACT schema below:
@@ -61,8 +57,6 @@ ONLY JSON.
 `;
 }
 
-// ===== SAFE GEMINI CALL =====
-
 async function callGemini(prompt: string) {
     for (let i = 0; i < 2; i++) {
         try {
@@ -80,7 +74,6 @@ async function callGemini(prompt: string) {
     return null;
 }
 
-// ===== CONCURRENCY LIMITER =====
 async function mapWithLimit<T, R>(
     items: T[],
     limit: number,
@@ -103,7 +96,6 @@ async function mapWithLimit<T, R>(
     return results;
 }
 
-// ===== MAIN =====
 
 async function main() {
     const input = JSON.parse(fs.readFileSync(INPUT_JSON, "utf-8"));
@@ -112,7 +104,6 @@ async function main() {
     let lockedSchema: any = null;
     const finalResults: any[] = [];
 
-    // 1. Process the first item sequentially to lock schema
     const firstItem = meritList.find(i => i.rawText);
     if (firstItem) {
         console.log("INITIAL PROCESSING (LOCKED SCHEMA):", firstItem.title);
@@ -134,7 +125,6 @@ async function main() {
         }
     }
 
-    // 2. Process all (other) items in parallel
     const remainingItems = meritList.filter(item => item !== firstItem);
 
     console.log(`Processing remaining ${remainingItems.length} items in parallel...`);
@@ -182,7 +172,6 @@ async function main() {
 
     const allResults = [...finalResults, ...parallelResults];
 
-    // ===== OUTPUT =====
     await fs.promises.writeFile(
         OUTPUT_JSON,
         JSON.stringify(
