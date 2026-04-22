@@ -9,9 +9,6 @@ jobs:
         runs-on: ubuntu-latest
         environment:
             name: prod
-        defaults:
-            run:
-                working-directory: frontend/my-app
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -28,11 +25,13 @@ jobs:
               run: gcloud auth configure-docker asia-south1-docker.pkg.dev
 
             - name: Create .env file from secrets
+              working-directory: frontend/my-app
               run: |
                   echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
                   echo "NEXT_PUBLIC_OTHER_SECRET=${{ secrets.NEXT_PUBLIC_OTHER_SECRET }}" >> .env
 
             - name: Build and push Docker image (frontend)
+              working-directory: frontend/my-app
               run: |
                   docker build -t asia-south1-docker.pkg.dev/bb-project-494105/frontentrepo/frontend:latest .
                   docker push asia-south1-docker.pkg.dev/bb-project-494105/frontentrepo/frontend:latest
@@ -49,9 +48,6 @@ jobs:
         runs-on: ubuntu-latest
         environment:
             name: prod
-        defaults:
-            run:
-                working-directory: backend
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -68,11 +64,13 @@ jobs:
               run: gcloud auth configure-docker asia-south1-docker.pkg.dev
 
             - name: Create .env file from secrets
+              working-directory: backend
               run: |
                   echo "API_URL=${{ secrets.API_URL }}" >> .env
                   echo "OTHER_SECRET=${{ secrets.OTHER_SECRET }}" >> .env
 
             - name: Build and push Docker image (backend)
+              working-directory: backend
               run: |
                   docker build -t asia-south1-docker.pkg.dev/bb-project-494105/backend-repo/backend:latest .
                   docker push asia-south1-docker.pkg.dev/bb-project-494105/backend-repo/backend:latest
