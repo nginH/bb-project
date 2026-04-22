@@ -4,15 +4,11 @@ on:
     push:
         branches:
             - main
-
-environment:
-    name: production
-
 jobs:
     build-and-deploy-frontend:
         runs-on: ubuntu-latest
         environment:
-            name: production
+            name: prod
         defaults:
             run:
                 working-directory: frontend/my-app
@@ -52,7 +48,7 @@ jobs:
     build-and-deploy-backend:
         runs-on: ubuntu-latest
         environment:
-            name: production
+            name: prod
         defaults:
             run:
                 working-directory: backend
