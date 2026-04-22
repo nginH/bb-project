@@ -5,7 +5,7 @@ const app = Fastify();
 
 app.register(chatRoutes);
 
-// Health check route for Cloud Run
+
 app.get("/health", async () => {
     return { status: "ok" };
 });

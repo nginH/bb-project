@@ -34,7 +34,7 @@ async function ensureTables() {
   `);
 }
 
-// ===== TYPES =====
+
 
 type Candidate = {
     applicationNo?: string;
@@ -56,7 +56,7 @@ type Input = {
     meritList: MeritItem[];
 };
 
-// ===== UTILS =====
+
 
 function hash(input: string) {
     return crypto.createHash("sha256").update(input).digest("hex");
@@ -70,7 +70,7 @@ function chunk<T>(arr: T[], size: number): T[][] {
     return res;
 }
 
-// ===== DOCUMENT INSERT =====
+
 
 async function insertDocument(item: MeritItem) {
     const id = hash(item.url);
@@ -152,7 +152,7 @@ async function insertCandidatesBatch(
     }
 }
 
-// ===== MAIN =====
+
 
 async function main() {
     await ensureTables();

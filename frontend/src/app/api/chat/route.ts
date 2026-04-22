@@ -1,4 +1,3 @@
-// Proxy API route for chat
 import type { NextRequest } from "next/server";
 
 export const runtime = "edge";

@@ -63,7 +63,7 @@ async function callGemini(prompt: string) {
             const result = await model.generateContent(prompt);
             let text = result.response.text();
 
-            // remove ```json ``` wrappers if present
+
             text = text.replace(/```json|```/g, "").trim();
 
             return JSON.parse(text);
@@ -99,7 +99,7 @@ async function mapWithLimit<T, R>(
 
 async function main() {
     const input = JSON.parse(fs.readFileSync(INPUT_JSON, "utf-8"));
-    const meritList = (input.meritList as any[]).slice(0, 110); // Limit to top 10 for safety/demo, adjust as needed
+    const meritList = (input.meritList as any[]).slice(0, 110);
 
     let lockedSchema: any = null;
     const finalResults: any[] = [];
@@ -146,7 +146,7 @@ async function main() {
             try {
                 let structured;
                 if (!lockedSchema) {
-                    // This fallback shouldn't really happen if firstItem worked
+
                     structured = await callGemini(SCHEMA_PROMPT + "\n\nTEXT:\n" + item.rawText.slice(0, 15000));
                 } else {
                     const prompt = buildStrictPrompt(lockedSchema) + "\n\nTEXT:\n" + item.rawText.slice(0, 15000);
