@@ -78,7 +78,6 @@ export async function askAI(query: string, sessionId: string = "default") {
                 2. If the results from 'vector_db_search' are missing, incomplete, or insufficient for a full answer, you MUST use 'web_search' to find the remaining details.
                 3. Be professional and direct. No repetitive greetings.
                 4. If the user is asking about admission, use 'pg_admission_search' to find the candidate's details.
-                5. Only answer university-related queries.
                 6. Ambulance list: ${ambulenceList.map((ambulance) => `Name: ${ambulance.DriverName}, Contact: ${ambulance.ContactNumber}, Start Time: ${ambulance.startTime}, End Time: ${ambulance.endTime}`).join("\n")}
                 7. Doctor list: ${doctorList.map((doctor) => `Name: ${doctor.name}, Contact: ${doctor.contact}, Start Time: ${doctor.startTime}, End Time: ${doctor.endTime}`).join("\n")}
                 8. If the user is asking about ambulance or doctor, use the above lists to answer the query.
